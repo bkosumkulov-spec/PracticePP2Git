@@ -13,10 +13,33 @@
 # print(sum)    
 
 #203 Sum of numbers
-n = int(input())
-i = 0
-sum = 0
-while i <= n:
-    sum += i
-    i += 1
-print(sum)
+# n = int(input())
+# sum = 0
+# for i in range(0,n):
+#     x = int(input())
+#     sum += x
+# print(sum)    
+    
+# n = int(input())
+# sum = 0
+# numbers = list(map(int, input().split())) 
+# i = 0
+# while i < n:
+#     sum += numbers[i]
+#     i += 1
+# print(sum)    
+
+#204 Positive numbers
+# n = int(input())
+# count = 0
+# numbers = list(map(int, input().split()))   
+# for i in range(0,n):
+#     if numbers[i] > 0:
+#         count += 1
+# print(count)
+
+#205 Is it the power of two
+n = int(input("n = "))
+
+        
+            
