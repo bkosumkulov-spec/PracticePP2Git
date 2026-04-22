@@ -1,0 +1,4 @@
+My first phone number: 8777-777-7777, second: 8777-666-6666.
+fruit: apple, cost: 2.5, amount: 5
+fruit: banana, cost: 3.0, amount: 3
+fruit: orange, cost: 4.2, amount: 2
