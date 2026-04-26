@@ -7,18 +7,20 @@ pygame.init()
 FPS = 60
 FramePerSec = pygame.time.Clock()
 
-BLUE  = (0, 0, 255)
-RED   = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+BLUE   = (0, 0, 255)
+RED    = (255, 0, 0)
+GREEN  = (0, 255, 0)
+BLACK  = (0, 0, 0)
+WHITE  = (255, 255, 255)
 YELLOW = (255, 255, 0)
+GOLD   = (255, 215, 0) 
 
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
 SPEED = 5
 SCORE = 0
 COIN_SCORE = 0
+N = 10 
 
 font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
@@ -69,16 +71,20 @@ class Player(pygame.sprite.Sprite):
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.radius = 10
-
-        self.image = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
-        pygame.draw.circle(self.image, YELLOW, (self.radius, self.radius), self.radius)
-        
-        self.rect = self.image.get_rect()
+        self.weight = 1
         self.spawn()
 
     def spawn(self):
-         self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), random.randint(40, SCREEN_HEIGHT - 40))
+        weights = [1, 1, 1, 3, 3, 5] 
+        self.weight = random.choice(weights)
+        self.radius = 10 + (self.weight * 2)
+        color = YELLOW if self.weight == 1 else GOLD if self.weight == 3 else GREEN
+        
+        self.image = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, color, (self.radius, self.radius), self.radius)
+        
+        self.rect = self.image.get_rect()
+        self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), random.randint(40, SCREEN_HEIGHT - 40))
          
     def move(self):
         pass     
@@ -104,7 +110,7 @@ pygame.time.set_timer(INC_SPEED, 1000)
 while True:
     for event in pygame.event.get():
         if event.type == INC_SPEED:
-            SPEED += 0.5      
+            SPEED += 0.2      
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
@@ -117,12 +123,16 @@ while True:
         entity.move()
         DISPLAYSURF.blit(entity.image, entity.rect)
 
-    if pygame.sprite.spritecollide(P1, coins, False):
-        COIN_SCORE += 1
-        C1.spawn() 
+    collided_coin = pygame.sprite.spritecollideany(P1, coins)
+    if collided_coin:
+        COIN_SCORE += collided_coin.weight
+        if COIN_SCORE >= N:
+            SPEED += 1
+            N += 10 
+            
+        collided_coin.spawn() 
 
     if pygame.sprite.spritecollideany(P1, enemies):
-        
         time.sleep(0.5)
         DISPLAYSURF.fill(RED)
         DISPLAYSURF.blit(game_over, (30, 250))
